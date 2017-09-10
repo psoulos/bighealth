@@ -7,7 +7,8 @@ app = Flask(__name__)
 DATABASE = './Diary.db'
 
 INSERT = 'INSERT INTO diary(userId,date_,timeIntoBed,timeOutOfBed,sleepQuality) VALUES(?, ?, ?, ?, ?)'
-GET = 'SELECT * FROM diary where userId=?'
+GET = 'SELECT * FROM diary WHERE userId=?'
+UPDATE = 'UPDATE diary SET %s WHERE userId=? AND id=?'
 
 
 def get_db():
@@ -54,3 +55,44 @@ def get_diaries(user_id):
     values = (user_id,)
     cursor.execute(GET, values)
     return cursor.fetchall()
+
+def update_diary(user_id, diary_id, date=None, timeIntoBed=None, timeOutOfBed=None, sleepQuality=None):
+    # TODO: what if an entry already exists for the new date?
+    # date, time into bed, time out of bed, sleep quality
+
+    # Create the set string and values to update the database
+    set_string = ''
+    values = ()
+
+    if not date == None:
+        set_string += 'date_=?'
+        values += (date,)
+
+    if not timeIntoBed == None:
+        if set_string:
+            set_string += ','
+        set_string += 'timeIntoBed=?'
+        values += (timeIntoBed,)
+
+    if not timeOutOfBed == None:
+        if set_string:
+            set_string += ','
+        set_string += 'timeOutOfBed=?'
+        values += (timeOutOfBed,)
+
+    if not sleepQuality == None:
+        if set_string:
+            set_string += ','
+        set_string += 'sleepQuality=?'
+        values += (sleepQuality,)
+
+    values += (user_id, diary_id)
+
+    print('Set string: %s' % set_string)
+    print('Values: %s' % str(values))
+
+    db = get_db()
+    cursor = db.cursor()
+    update = UPDATE % set_string
+    cursor.execute(update, values)
+    db.commit()

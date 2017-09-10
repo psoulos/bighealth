@@ -40,6 +40,10 @@ def put_update_diary(user_id, diary_id):
     except ValueError:
         # TODO: this should be a 404 or something similar
         return 'user_id and diary_id must be integers'
+    data = json.loads(request.data)
+    # TODO how do we deal with conflicting dates?
+    update_diary(user_id, diary_id, data.get('date', None), data.get('timeIntoBed', None),
+                 data.get('timeOutOfBed', None), data.get('sleepQuality', None))
     return 'put_specific_diary'
 
 @app.route('/user/<user_id>/diary/<diary_id>', methods=['DELETE'])
