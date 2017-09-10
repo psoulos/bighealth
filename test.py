@@ -7,9 +7,16 @@ HOST = 'http://127.0.0.1:5000/'
 def test_get():
     url = os.path.join(HOST, 'user/-1/diaries')
     res = requests.get(url)
-    if res.status_code != 200 or res.text != 'get_user_diares':
+    if res.status_code != 200 or res.text != 'get_user_diares -1':
         raise Exception('test_get failed')
 
+def test_get_fail_invalid_userid():
+    url = os.path.join(HOST, 'user/hello/diaries')
+    res = requests.get(url)
+    if res.text != 'user id must be an integer':
+        raise Exception('test_get_fail_invalid_userid failed')
+
+# test_post needs to be updated to include JSON data to post
 def test_post():
     url = os.path.join(HOST, 'user/-1/diary')
     res = requests.post(url)
