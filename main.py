@@ -54,4 +54,5 @@ def delete_diary(user_id, diary_id):
     except ValueError:
         # TODO: this should be a 404 or something similar
         return 'user_id and diary_id must be integers'
+    remove_diary(user_id, diary_id)
     return 'delete_diary'
