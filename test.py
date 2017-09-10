@@ -4,6 +4,7 @@ import os
 # This assumes flask is running on the default port
 HOST = 'http://127.0.0.1:5000/'
 
+# TODO: test_get should be updated to check for valid JSON matching the test db
 def test_get():
     url = os.path.join(HOST, 'user/-1/diaries')
     res = requests.get(url)

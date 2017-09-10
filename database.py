@@ -7,6 +7,7 @@ app = Flask(__name__)
 DATABASE = './Diary.db'
 
 INSERT = 'INSERT INTO diary(userId,date_,timeIntoBed,timeOutOfBed,sleepQuality) VALUES(?, ?, ?, ?, ?)'
+GET = 'SELECT * FROM diary where userId=?'
 
 
 def get_db():
@@ -42,3 +43,14 @@ def insert_new_diary(user_id, date, timeIntoBed, timeOutOfBed, sleepQuality):
     values = (user_id, date, timeIntoBed, timeOutOfBed, sleepQuality)
     cursor.execute(INSERT, values)
     db.commit()
+
+def get_diaries(user_id):
+    '''
+    Returns all diaries for the given user as a list where each row is a dictionary with keys as defined in schema.sql
+    An empty list is returned if there are no matching rows.
+    '''
+    db = get_db()
+    cursor = db.cursor()
+    values = (user_id,)
+    cursor.execute(GET, values)
+    return cursor.fetchall()

@@ -18,7 +18,7 @@ def get_user_diares(user_id):
         return 'user_id must be an integer'
 
     # Return a list of all diary entries for a user
-    return 'get_user_diares %s' % user_id
+    return str(get_diaries(user_id))
 
 @app.route('/user/<user_id>/diary', methods=['POST'])
 def post_new_diary(user_id):
