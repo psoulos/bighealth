@@ -10,6 +10,7 @@ INSERT = 'INSERT INTO diary(userId,date_,timeIntoBed,timeOutOfBed,sleepQuality) 
 GET = 'SELECT * FROM diary WHERE userId=?'
 UPDATE = 'UPDATE diary SET %s WHERE userId=? AND id=?'
 DELETE = 'DELETE FROM diary where userId=? AND id=?'
+GET_BY_DATE = 'SELECT * FROM diary where userId=? and date_=?'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -103,3 +104,10 @@ def remove_diary(user_id, diary_id):
     values = (user_id, diary_id)
     cursor.execute(DELETE, values)
     db.commit()
+
+def get_diary_by_date(user_id, date):
+    db = get_db()
+    cursor = db.cursor()
+    values = (user_id, date)
+    cursor.execute(GET_BY_DATE, values)
+    return cursor.fetchall()

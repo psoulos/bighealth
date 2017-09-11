@@ -28,7 +28,11 @@ def post_new_diary(user_id):
         # TODO: this should be a 404 or something similar
         return 'user_id must be an integer'
     data = json.loads(request.data)
-    # TODO: check if an entry already exists for date
+
+    # Check if an entry already exists for date
+    if get_diary_by_date(user_id, date['date']):
+        return 'diary for this user and date already exists'
+
     insert_new_diary(user_id, data['date'], data['timeIntoBed'], data['timeOutOfBed'], data['sleepQuality'])
     return 'post_new_diary'
 
